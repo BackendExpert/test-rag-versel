@@ -1,0 +1,28 @@
+import { Global, Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+@Global()
+@Module({
+    imports: [
+        // MongooseModule.forRootAsync({
+        //     connectionName: 'local',
+        //     imports: [ConfigModule],
+        //     inject: [ConfigService],
+        //     useFactory: (config: ConfigService) => ({
+        //         uri: config.get<string>('MONGO_URI'),
+        //     }),
+        // }),
+
+        MongooseModule.forRootAsync({
+            connectionName: 'atlas',
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                uri: config.get<string>('MONGO_ATLES_URI'),
+            }),
+        }),
+    ],
+    exports: [MongooseModule],
+})
+export class DatabaseModule { }
