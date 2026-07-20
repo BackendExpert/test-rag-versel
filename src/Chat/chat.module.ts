@@ -3,8 +3,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { DocumentChunk, DocumentChunkSchema } from "../admin/schema/chunk.schema";
 import { ChatController } from "./chat.controller";
 import { ChatService } from "./chat.service";
-import { OllamaService } from "src/ragAi/ollama.service";
-import { VectorService } from "src/ragAi/vector.service";
+import { OllamaService } from "../ragAi/ollama.service";
+import { VectorService } from "../ragAi/vector.service";
 
 @Module({
     imports: [

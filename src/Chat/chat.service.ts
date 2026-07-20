@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { DocumentChunk, DocumentChunkDocument } from "../admin/schema/chunk.schema";
-import { OllamaService } from "src/ragAi/ollama.service";
-import { VectorService } from "src/ragAi/vector.service";
+import { OllamaService } from "../ragAi/ollama.service";
+import { VectorService } from "../ragAi/vector.service";
 
 @Injectable()
 export class ChatService {
