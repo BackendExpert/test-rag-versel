@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { DocumentChunk, DocumentChunkDocument } from "src/admin/schema/chunk.schema";
+import { DocumentChunk, DocumentChunkDocument } from "../admin/schema/chunk.schema";
 import { OllamaService } from "src/ragAi/ollama.service";
 import { VectorService } from "src/ragAi/vector.service";
 
