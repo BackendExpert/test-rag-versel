@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { DocumentChunk, DocumentChunkSchema } from "src/admin/schema/chunk.schema";
+import { DocumentChunk, DocumentChunkSchema } from "../admin/schema/chunk.schema";
 import { ChatController } from "./chat.controller";
 import { ChatService } from "./chat.service";
 import { OllamaService } from "src/ragAi/ollama.service";
