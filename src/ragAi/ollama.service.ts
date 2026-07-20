@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
+import { GoogleGenAI } from "@google/genai";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class OllamaService {
@@ -18,51 +20,98 @@ export class OllamaService {
         return response.data.embeddings[0];
     }
 
-
     async generateAnswer(
         question: string,
         context: string,
     ): Promise<string> {
 
-        const response = await axios.post(
-            `${this.ollamaUrl}/api/generate`,
-            {
-                model: "qwen2.5:1.5b",
+        const configService = new ConfigService();
 
-                prompt: `
-                    You are a company document assistant.
+        const ai = new GoogleGenAI({
+            apiKey: configService.get<string>("GEMINI_API_KEY")!,
+        });
 
-                    Answer only using the provided context.
+        const prompt = `
+            You are a company document assistant.
 
-                    If the question asks for a list, include ALL items from the context.
+            Answer only using the provided context.
 
-                    Do not provide only one example.
+            If the question asks for a list, include ALL items from the context.
 
-                    Do not use general knowledge.
+            Do not provide only one example.
 
-                    If the answer is not in the context:
-                    "I cannot find this information in the uploaded documents."
+            Do not use general knowledge.
 
-                    Context:
-                    ${context}
+            If the answer is not in the context:
+            "I cannot find this information in the uploaded documents."
 
-                    Question:
-                    ${question}
+            Context:
+            ${context}
 
-                    Answer:
-                `,
+            Question:
+            ${question}
 
-                stream: false,
+            Answer:
+            `;
 
-                options: {
-                    num_predict: 1000,
-                    temperature: 0.1,
-                    top_p: 0.9
-                }
-            }
-        );
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: prompt,
+            config: {
+                temperature: 0.1,
+                topP: 0.9,
+                maxOutputTokens: 1000,
+            },
+        });
 
-        return response.data.response;
+        return response.text ?? "";
     }
+
+
+    // async generateAnswer(
+    //     question: string,
+    //     context: string,
+    // ): Promise<string> {
+
+    //     const response = await axios.post(
+    //         `${this.ollamaUrl}/api/generate`,
+    //         {
+    //             model: "qwen2.5:1.5b",
+
+    //             prompt: `
+    //                 You are a company document assistant.
+
+    //                 Answer only using the provided context.
+
+    //                 If the question asks for a list, include ALL items from the context.
+
+    //                 Do not provide only one example.
+
+    //                 Do not use general knowledge.
+
+    //                 If the answer is not in the context:
+    //                 "I cannot find this information in the uploaded documents."
+
+    //                 Context:
+    //                 ${context}
+
+    //                 Question:
+    //                 ${question}
+
+    //                 Answer:
+    //             `,
+
+    //             stream: false,
+
+    //             options: {
+    //                 num_predict: 1000,
+    //                 temperature: 0.1,
+    //                 top_p: 0.9
+    //             }
+    //         }
+    //     );
+
+    //     return response.data.response;
+    // }
 
 }
