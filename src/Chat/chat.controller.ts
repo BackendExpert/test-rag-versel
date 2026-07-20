@@ -5,7 +5,9 @@ import { ChatService } from "./chat.service";
 export class ChatController {
     constructor(
         private readonly chatService: ChatService
-    ) { }
+    ) { 
+        console.log("🔥 ChatController Loaded");
+    }
 
     @Post('/ask')
     async AskQuestion(
