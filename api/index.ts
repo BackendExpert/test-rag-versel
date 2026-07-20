@@ -34,6 +34,24 @@ async function bootstrap() {
 
     await app.init();
 
+
+    // Debug registered routes
+    const router = app
+        .getHttpAdapter()
+        .getInstance()
+        ._router;
+
+    console.log(
+        "REGISTERED ROUTES:",
+        router?.stack
+            ?.filter((layer: any) => layer.route)
+            .map((layer: any) => ({
+                path: layer.route.path,
+                method: Object.keys(layer.route.methods),
+            })),
+    );
+
+
     appInitialized = true;
 }
 
